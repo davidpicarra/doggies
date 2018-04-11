@@ -1,0 +1,18 @@
+version: '2'
+services:
+  web:
+    build: frontend
+    container_name: frontend
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./frontend/src:/opt/app/src
+    environment:
+      API_HOSTNAME: 'backend'
+  backend:
+    build: backend
+    container_name: backend
+    volumes:
+      - ./backend/src:/opt/server/src
+    ports:
+      - '3000:3000'

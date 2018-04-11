@@ -1,66 +1,42 @@
 version: 2
 
 defaults: &defaults
-  working_directory: ~/project/davidpicarra
+  working_directory: ~/project/doggies
   docker:
     - image: circleci/node:latest
 
 jobs:
-  install:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - davidpicarra
-
   build:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/project
-      - run: npm run build
-      - persist_to_workspace:
-          root: ~/project/davidpicarra
-          paths:
-            - dist
+      - checkout
 
-  test:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: npm test
+      - run:
+          name: Start container and verify it's working
+          command:
+            docker-compose up -d --build
+            docker run --network container:backend \
+              appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000/
+            docker run --network container:frontend \
+              appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/
+
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - doggies
 
   deploy:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/project/davidpicarra
-      - run: scp -r -o StrictHostKeyChecking=no dist/* $droplet:~/html
+          at: ~/project/
+      - run: scp -r -o StrictHostKeyChecking=no dist/* $droplet:~/doggies
 
 workflows:
   version: 2
   install-and-parallel-build-test:
     jobs:
-      - install
-      - build:
-          requires:
-            - install
-      - test:
-          requires:
-            - install
+      - build
       - deploy:
           requires:
             - build
-            - test

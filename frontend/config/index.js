@@ -1,6 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+var apiHost = process.env.API_HOSTNAME || 'localhost'
+
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -27,7 +29,17 @@ module.exports = {
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      // proxy all requests starting with /api to jsonplaceholder
+      '/api': {
+        target: `http://${apiHost}:3000`,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        },
+        secure: false
+      }
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

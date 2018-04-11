@@ -4,8 +4,21 @@ import Vue from 'vue'
 import VueAnalytics from 'vue-analytics'
 import App from './App'
 import router from './router'
+import VueResource from 'vue-resource'
+import VueProgressbar from 'vue-progressbar'
+import VueResourceProgressBarInterceptor from 'vue-resource-progressbar-interceptor'
 
 Vue.config.productionTip = false
+
+Vue.use(VueResource)
+
+Vue.use(VueProgressbar, {
+  color: 'rgb(80, 171, 86)',
+  failedColor: 'red',
+  height: '3px'
+})
+
+Vue.use(VueResourceProgressBarInterceptor)
 
 Vue.use(VueAnalytics, {
   id: 'UA-108227943-1',
