@@ -27,6 +27,8 @@ jobs:
             - v1-{{ .Branch }}
           paths:
             - /caches/backend.tar
+            - /caches/frontend.tar
+
       - run:
           name: Backend - Load Docker image layer cache
           command: |
@@ -41,16 +43,7 @@ jobs:
           command: |
             mkdir -p /caches
             docker save -o /caches/backend.tar backend
-      - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
-          paths:
-            - /caches/backend.tar
 
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
-          paths:
-            - /caches/frontend.tar
       - run:
           name: Frontend - Load Docker image layer cache
           command: |
@@ -68,6 +61,7 @@ jobs:
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
+            - /caches/backend.tar
             - /caches/frontend.tar
 
       - run:
