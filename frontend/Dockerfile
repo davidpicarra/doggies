@@ -8,8 +8,6 @@ RUN apt-get update && \
   apt-get autoremove -y && \
   rm -rf /var/lib/apt/lists/*
 
-ENV PATH "$PATH:/opt/yarn/dist/bin"
-
 # Install packages using Yarn
 ADD package.json yarn.lock /opt/app/
 RUN cd /opt/app/ && yarn
