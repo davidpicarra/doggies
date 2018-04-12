@@ -6,7 +6,7 @@ defaults: &defaults
     - image: docker:17.05.0-ce-git
 
 jobs:
-  install:
+  build:
     <<: *defaults
     steps:
       - checkout
@@ -22,16 +22,6 @@ jobs:
       - run: docker version
       - run: docker-compose version
 
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - doggies
-
-  build-backend:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/project
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -56,16 +46,6 @@ jobs:
           paths:
             - /caches/backend.tar
 
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - doggies
-
-  build-frontend:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/project
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -89,17 +69,6 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/frontend.tar
-
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - doggies
-
-  test:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/project
       - run:
           name: Start container and verify it's working
           command:
@@ -127,19 +96,9 @@ jobs:
 
 workflows:
   version: 2
-  install-and-parallel-build-test:
+  build_and_deploy:
     jobs:
-      - install
-      - build-backend:
-          requires:
-            - install
-      - build-frontend:
-          requires:
-            - install
-      - test:
-          requires:
-            - build-backend
-            - build-frontend
+      - build
       - deploy:
           requires:
-            - test
+            - build
