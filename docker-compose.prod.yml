@@ -1,0 +1,15 @@
+version: "3"
+services:
+  web:
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      PRODUCTION: 'true'
+
+  backend:
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      PRODUCTION: 'true'

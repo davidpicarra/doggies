@@ -1,0 +1,17 @@
+version: "3"
+services:
+  web:
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./frontend/src:/opt/app/src
+    environment:
+      DEBUG: 'true'
+
+  backend:
+    volumes:
+      - ./backend:/opt/server
+    ports:
+      - '3000:3000'
+    environment:
+      DEBUG: 'true'

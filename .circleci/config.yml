@@ -29,7 +29,8 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/project/backend
+          at: ~/project
+      - working_directory: ~/project/backend
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -63,7 +64,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/project/frontend
+          at: ~/project
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -118,6 +119,10 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run: scp -r -o StrictHostKeyChecking=no dist/* $droplet:~/doggies
+      - run: ssh $droplet '
+            cd ~/doggies
+            docker-compose build
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d'
 
 workflows:
   version: 2
