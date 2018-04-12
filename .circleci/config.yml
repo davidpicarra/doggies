@@ -1,9 +1,11 @@
 version: 2
 
+machine:
+  services:
+    - docker
+
 defaults: &defaults
   working_directory: ~/project/doggies
-  docker:
-    - image: docker:17.05.0-ce-git
 
 jobs:
   install:
@@ -11,14 +13,8 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --no-cache \
-              py-pip=9.0.0-r1
-            pip install \
-              docker-compose==1.12.0 \
-              awscli==1.11.7
+      - docker version
+      - docker-compose version
 
       - persist_to_workspace:
           root: ~/project
