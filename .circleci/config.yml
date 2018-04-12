@@ -30,7 +30,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - working_directory: ~/project/doggies/backend
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -44,7 +43,7 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build --cache-from=backend -t backend .
+            docker build --cache-from=backend -t backend backend
       - run:
           name: Save Docker image layer cache
           command: |
@@ -65,7 +64,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - working_directory: ~/project/doggies/backend
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -79,7 +77,7 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build --cache-from=frontend -t frontend .
+            docker build --cache-from=frontend -t frontend frontend
       - run:
           name: Save Docker image layer cache
           command: |
