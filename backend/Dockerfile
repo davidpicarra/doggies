@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:alpine
 LABEL maintainer="daviddcp@gmail.com"
 
 # Install packages using Yarn
