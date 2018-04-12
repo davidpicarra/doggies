@@ -30,7 +30,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - working_directory: ~/project/backend
+      - working_directory: ~/project/doggies/backend
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -65,6 +65,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
+      - working_directory: ~/project/doggies/backend
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
