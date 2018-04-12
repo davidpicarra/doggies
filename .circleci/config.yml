@@ -1,11 +1,9 @@
 version: 2
 
-machine:
-  services:
-    - docker
-
 defaults: &defaults
   working_directory: ~/project/doggies
+  docker:
+    - image: docker:17.05.0-ce-git
 
 jobs:
   install:
