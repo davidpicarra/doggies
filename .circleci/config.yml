@@ -83,7 +83,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - deploy: scp -r -o StrictHostKeyChecking=no dist/* $droplet:~/doggies
+      - run: scp -r -o StrictHostKeyChecking=no dist/* $droplet:~/doggies
       - run: ssh $droplet '
             cd ~/doggies
             docker-compose build
