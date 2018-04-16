@@ -3,7 +3,8 @@ version: 2
 defaults: &defaults
   working_directory: ~/project/doggies
   docker:
-    - image: docker:17.05.0-ce-git
+    - image: circleci/node:latest
+    # - image: docker:17.05.0-ce-git
 
 jobs:
   build:
