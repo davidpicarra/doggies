@@ -3,8 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/project/doggies
   docker:
-    - image: circleci/node:latest
-    # - image: docker:17.05.0-ce-git
+    - image: docker:17.05.0-ce-git
 
 jobs:
   build:
@@ -84,6 +83,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
+      - add_ssh_keys:  # add key from CircleCI account based on fingerprint
+          fingerprints:
+            - "26:8d:76:9f:c6:70:89:e7:7e:51:0b:ab:5f:f4:d2:12"
       - run: scp -r -o StrictHostKeyChecking=no . $droplet:~/doggies
       - run: ssh $droplet '
             cd ~/doggies
