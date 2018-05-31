@@ -34,7 +34,7 @@ const parseData = (data) => {
       href: `https://www.battersea.org.uk${animal.path}`
     })
   }
-  return dogs.sort((a, b) => new Date(b.date) - new Date(a.date))
+  return dogs.sort((a, b) => new Date(b.date_published) - new Date(a.date_published))
 }
 
 export default api

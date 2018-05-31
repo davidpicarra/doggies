@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:9.11.1-alpine
 LABEL maintainer="daviddcp@gmail.com"
 
 # Install packages using Yarn
